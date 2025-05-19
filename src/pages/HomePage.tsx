@@ -1,7 +1,7 @@
-export default function HistoryList() {
+export default function HomePage() {
     return (
         <>
-        <h1>History List</h1>
+        <h1>Home Page</h1>
         {/* Add your history list implementation here */}
         </>
     );

@@ -1,4 +1,5 @@
 import { Outlet } from "react-router-dom";
+import { SideBar } from "../components/SideBar";
 
 export function Root() {
 
@@ -6,7 +7,10 @@ export function Root() {
         <>
         <h1>Root Component</h1>
         {/* Add your root component implementation here */}
-        <Outlet />
+        <div className="flex flex-row h-screen">
+            <SideBar/>
+            <Outlet />
+        </div>
         </>
     );
 }

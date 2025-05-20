@@ -1,6 +1,6 @@
 interface BodyTabProps {
     updatedBody: (json: JSON) => void;
-    body: string;
+    body?: string | undefined;
 }
 
 export function BodyTab({updatedBody,body}: BodyTabProps) {
@@ -26,7 +26,7 @@ export function BodyTab({updatedBody,body}: BodyTabProps) {
                     placeholder="Enter JSON here"
                     onChange={handleChange}
                     rows={7}
-                    value={JSON.stringify(JSON.parse(body), null, 2)}
+                    value={body && JSON.stringify(JSON.parse(body), null, 2)}
                 />
             </div>
         </div>

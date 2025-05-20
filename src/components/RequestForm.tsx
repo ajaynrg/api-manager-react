@@ -10,7 +10,6 @@ import { HeadersTab } from "./HeadersTab";
 import { type JSX } from "react";
 import { BodyTab } from "./BodyTab";
 import { ParamsTab } from "./ParamsTab";
-import { useSelector} from "react-redux";
 import { useDispatch } from "react-redux";
 import { setBody } from "../store";
 
@@ -34,7 +33,7 @@ export default function RequestForm() {
     });
 
 
-    const body = useSelector((state: { body: { value: string } }) => state.body.value);
+    // const body = useSelector((state: { body: { value: string } }) => state.body.value);
     const dispatch = useDispatch();
 
     const [activeTab, setActiveTab] = useState("Headers");
@@ -55,7 +54,7 @@ export default function RequestForm() {
             case "Headers":
                 return <HeadersTab/>;
             case "Body":
-                return <BodyTab body={body} updatedBody={(body)=> handleBodyChange(body)}/>;
+                return <BodyTab updatedBody={(body)=> handleBodyChange(body)}/>;
             case "Params":
                 return <ParamsTab/>;
             default:

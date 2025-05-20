@@ -3,7 +3,7 @@ import { createSlice } from "@reduxjs/toolkit";
 export const bodySlice = createSlice({
     name: "body",
     initialState: {
-        value: JSON.stringify({hello:'123'}),
+        value: "",
     },
     reducers: {
         setBody: (state, action) => {

@@ -11,6 +11,7 @@ interface SelectProps {
 }
 
 export function Select({options, selected, className, onSelect, errors,  ...props}: SelectProps) {
+    const errorClass = errors ? "border-red-500" : "";
     return (
         <div className={classNames("relative flex items-center", className)}>
             <select
@@ -19,7 +20,7 @@ export function Select({options, selected, className, onSelect, errors,  ...prop
                 className={
                     classNames(
                     "w-full h-full px-2 bg-white border cursor-pointer border-gray-300 hover:border-blue-200 focus:border-blue-200 focus:ring focus:ring-blue-200 focus:ring-opacity-50",
-                    className)
+                    className, errorClass)
                 }
             >
                 {options.map((option,index) => (

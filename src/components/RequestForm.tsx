@@ -2,8 +2,12 @@ import { Input } from "./Input";
 import { Select } from "./Select";
 import { Button } from "./Button";
 import { useForm, type SubmitHandler } from "react-hook-form";
+import { useState } from "react";
 import z from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
+import { Tabs } from "./Tabs";
+import { HeadersTab } from "./HeadersTab";
+import { type JSX } from "react";
 
 const formSchema = z.object({
     method: z.enum(["GET", "POST", "PUT", "DELETE", "PATCH"]),
@@ -24,11 +28,26 @@ export default function RequestForm() {
         resolver: zodResolver(formSchema),
     });
 
+    const [activeTab, setActiveTab] = useState("Headers");
+
     const onSubmit: SubmitHandler<FormFields> = async (data) => {
         await new Promise((resolve) => setTimeout(resolve, 1000));
         data.headers = ['Content-Type: application/json', 'Authorization: Bearer token'];
         console.log(data);
     }
+
+    const renderTab = (): JSX.Element => {
+        switch (activeTab) {
+            case "Headers":
+                return <HeadersTab/>;
+            case "Body":
+                return <div>Body</div>;
+            case "Params":
+                return <div>Params</div>;
+            default:
+                return <></>;
+        }
+    };
 
     return (
         <form onSubmit={handleSubmit(onSubmit)}>
@@ -57,8 +76,16 @@ export default function RequestForm() {
                     >{isSubmitting ? 'Sending': 'Send'}</Button>
                 </div>
             </div>
-            <div className="">
-                
+            <div className="flex flex-col w-full gap-y-3">
+                <Tabs
+                    tabs={["Headers", "Body", "Params"]}
+                    className="mt-3 mx-5"
+                    activeTab={activeTab}
+                    onTabClick={setActiveTab}
+                />
+                <div className="mx-5 my-3">
+                    {renderTab()}
+                </div>
             </div>
         </form>
     );

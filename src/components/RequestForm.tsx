@@ -2,20 +2,31 @@ import { Input } from "./Input";
 import { Select } from "./Select";
 import { Button } from "./Button";
 import { useForm, type SubmitHandler } from "react-hook-form";
+import z from "zod";
+import { zodResolver } from "@hookform/resolvers/zod";
 
-interface FormFields{
-    method: string;
-    url: string;
-}
+const formSchema = z.object({
+    method: z.enum(["GET", "POST", "PUT", "DELETE", "PATCH"]),
+    url: z.string().url("Invalid URL").nonempty("URL is required"),
+    headers: z.array(z.string()).optional(),
+    body: z.string().optional(),
+    params: z.string().optional(),
+})
+
+type FormFields = z.infer<typeof formSchema>;
 
 export default function RequestForm() {
     const {
         register,
         handleSubmit,
-        formState: { errors },
-    } = useForm<FormFields>();
+        formState: { errors, isSubmitting },
+    } = useForm<FormFields>({
+        resolver: zodResolver(formSchema),
+    });
 
-    const onSubmit: SubmitHandler<FormFields> = (data) => {
+    const onSubmit: SubmitHandler<FormFields> = async (data) => {
+        await new Promise((resolve) => setTimeout(resolve, 1000));
+        data.headers = ['Content-Type: application/json', 'Authorization: Bearer token'];
         console.log(data);
     }
 
@@ -26,9 +37,7 @@ export default function RequestForm() {
                     <Select
                         options={["GET", "POST", "PUT", "DELETE"]}
                         className="h-10 rounded-l-sm rounded-r-none shadow-none"
-                        {...register("method", 
-                            { required: 'HTTP Method is required' })
-                        }
+                        {...register("method")}
                         errors={errors.method}
                     />
                 </div>
@@ -36,9 +45,7 @@ export default function RequestForm() {
                     <Input
                         className="h-10 rounded-none"
                         placeholder="URL"
-                        {...register("url", 
-                            { required: 'URL is required' })
-                        }
+                        {...register("url")}
                         errors={errors.url}
                     />
                 </div>
@@ -46,8 +53,12 @@ export default function RequestForm() {
                     <Button
                         className="h-10 rounded-none rounded-r-sm"
                         type="submit"
-                    >Send</Button>
+                        disabled={isSubmitting}
+                    >{isSubmitting ? 'Sending': 'Send'}</Button>
                 </div>
+            </div>
+            <div className="">
+                
             </div>
         </form>
     );

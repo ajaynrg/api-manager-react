@@ -1,8 +1,8 @@
-export default function HistoryList() {
+export default function ResponseViewer() {
     return (
-        <>
-        <h1>History List</h1>
-        {/* Add your history list implementation here */}
-        </>
+        <div className="bg-yellow-100">
+            <h1>ResponseViewer</h1>
+            {/* Add your history list implementation here */}
+        </div>
     );
 }

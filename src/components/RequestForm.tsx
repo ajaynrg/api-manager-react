@@ -8,6 +8,11 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { Tabs } from "./Tabs";
 import { HeadersTab } from "./HeadersTab";
 import { type JSX } from "react";
+import { BodyTab } from "./BodyTab";
+import { ParamsTab } from "./ParamsTab";
+import { useSelector} from "react-redux";
+import { useDispatch } from "react-redux";
+import { setBody } from "../store";
 
 const formSchema = z.object({
     method: z.enum(["GET", "POST", "PUT", "DELETE", "PATCH"]),
@@ -28,6 +33,10 @@ export default function RequestForm() {
         resolver: zodResolver(formSchema),
     });
 
+
+    const body = useSelector((state: { body: { value: string } }) => state.body.value);
+    const dispatch = useDispatch();
+
     const [activeTab, setActiveTab] = useState("Headers");
 
     const onSubmit: SubmitHandler<FormFields> = async (data) => {
@@ -36,14 +45,19 @@ export default function RequestForm() {
         console.log(data);
     }
 
+    const handleBodyChange = (json: JSON) => {
+        console.log("Body changed", json);
+        dispatch(setBody({payload: JSON.stringify(json)}));
+    }
+
     const renderTab = (): JSX.Element => {
         switch (activeTab) {
             case "Headers":
                 return <HeadersTab/>;
             case "Body":
-                return <div>Body</div>;
+                return <BodyTab body={body} updatedBody={(body)=> handleBodyChange(body)}/>;
             case "Params":
-                return <div>Params</div>;
+                return <ParamsTab/>;
             default:
                 return <></>;
         }

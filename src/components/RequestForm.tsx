@@ -9,6 +9,10 @@ import { Tabs } from "./Tabs";
 import { HeadersTab } from "./HeadersTab";
 import { type JSX } from "react";
 import { ParamsTab } from "./ParamsTab";
+import { useDispatch, useSelector } from "react-redux";
+import type { AppDispatch, RootState } from "../store";
+import { BodyTab } from "./BodyTab";
+import { setBody } from "../store/slices/RequestSlice";
 
 const formSchema = z.object({
     method: z.enum(["GET", "POST", "PUT", "DELETE", "PATCH"]),
@@ -28,10 +32,8 @@ export default function RequestForm() {
     } = useForm<FormFields>({
         resolver: zodResolver(formSchema),
     });
-
-
-    // const body = useSelector((state: { body: { value: string } }) => state.body.value);
-    // const dispatch = useDispatch();
+    const { url, body, headers, params, method } = useSelector((state: RootState) => state.request);
+    const dispatch: AppDispatch = useDispatch();
 
     const [activeTab, setActiveTab] = useState("Headers");
 
@@ -41,20 +43,19 @@ export default function RequestForm() {
         console.log(data);
     }
 
-    // const handleBodyChange = (json: JSON) => {
-    //     console.log("Body changed", json);
-    //     dispatch(setBody({payload: JSON.stringify(json)}));
-    // }
+    const handleBodyChange = (json: JSON) => {
+        console.log("Body changed", json);
+        dispatch(setBody(JSON.stringify(json)));
+    }
 
     const renderTab = (): JSX.Element => {
         switch (activeTab) {
             case "Headers":
-                return <HeadersTab/>;
+                return <HeadersTab headers={headers}/>;
             case "Body":
-                return <div>Body</div>
-                // return <BodyTab updatedBody={(body)=> handleBodyChange(body)}/>;
+                return <BodyTab body={body} updatedBody={(body)=> handleBodyChange(body)}/>;
             case "Params":
-                return <ParamsTab/>;
+                return <ParamsTab params={params}/>;
             default:
                 return <></>;
         }
@@ -65,10 +66,11 @@ export default function RequestForm() {
             <div className="grid grid-cols-10 mt-3 mx-5">
                 <div className="col-span-1">
                     <Select
-                        options={["GET", "POST", "PUT", "DELETE"]}
+                        options={["GET", "POST", "PUT", "DELETE", "PATCH", "OPTIONS"]}
                         className="h-10 rounded-l-sm rounded-r-none shadow-none"
                         {...register("method")}
                         errors={errors.method}
+                        selectedVal={method}
                     />
                 </div>
                 <div className="col-span-8">
@@ -77,6 +79,7 @@ export default function RequestForm() {
                         placeholder="URL"
                         {...register("url")}
                         errors={errors.url}
+                        value={url}
                     />
                 </div>
                 <div className="col-span-1">

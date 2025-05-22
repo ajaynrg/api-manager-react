@@ -6,9 +6,10 @@ interface InputProps {
     className? : string;
     placeholder? : string;
     errors?: FieldError | undefined;
+    value?: string;
 }
 
-export function Input({handleInput, placeholder, className,errors, ...props}: InputProps) {
+export function Input({handleInput, placeholder,value, className,errors, ...props}: InputProps) {
     const errorClass = errors ? "border-red-500 border-2" : "";
     return (
         <>
@@ -23,6 +24,7 @@ export function Input({handleInput, placeholder, className,errors, ...props}: In
                             ,className
                             ,errorClass
                         )}
+                    value={value}
                     {...props}
                 />
                 {

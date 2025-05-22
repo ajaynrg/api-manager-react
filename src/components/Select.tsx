@@ -4,13 +4,13 @@ import type { FieldError } from "react-hook-form";
 
 interface SelectProps {
     options: string[] | JSX.Element[];
-    selected?: string;
+    selectedVal?: string;
     onSelect?: (option: string) => void;
     className?: string;
     errors?: FieldError | undefined;
 }
 
-export function Select({options, selected, className, onSelect, errors,  ...props}: SelectProps) {
+export function Select({options, selectedVal, className, onSelect, errors,  ...props}: SelectProps) {
     const errorClass = errors ? "border-red-500" : "";
     return (
         <div className={classNames("relative flex items-center", className)}>
@@ -22,9 +22,10 @@ export function Select({options, selected, className, onSelect, errors,  ...prop
                     "w-full h-full px-2 bg-white border cursor-pointer border-gray-300 hover:border-blue-200 focus:border-blue-200 focus:ring focus:ring-blue-200 focus:ring-opacity-50",
                     className, errorClass)
                 }
+                defaultValue={selectedVal}
             >
                 {options.map((option,index) => (
-                    <option defaultChecked={option === selected} key={index}>
+                    <option key={index}>
                         {option}
                     </option>
                 ))}

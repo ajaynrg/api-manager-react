@@ -9,10 +9,10 @@ interface InputProps {
 }
 
 export function Input({handleInput, placeholder, className,errors, ...props}: InputProps) {
-    const errorClass = errors ? "border-red-500" : "";
+    const errorClass = errors ? "border-red-500 border-2" : "";
     return (
         <>
-            <div className="flex flex-col items-center">
+            <div className="flex flex-col">
                 <input
                     type="text"
                     placeholder={placeholder}
@@ -27,7 +27,7 @@ export function Input({handleInput, placeholder, className,errors, ...props}: In
                 />
                 {
                     errors && 
-                    <span className="text-red-500 text-xs">
+                    <span className="text-red-500 font-bold text-xs">
                         {errors.message}
                     </span>
                 }

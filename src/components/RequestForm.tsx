@@ -8,14 +8,11 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { Tabs } from "./Tabs";
 import { HeadersTab } from "./HeadersTab";
 import { type JSX } from "react";
-import { BodyTab } from "./BodyTab";
 import { ParamsTab } from "./ParamsTab";
-import { useDispatch } from "react-redux";
-import { setBody } from "../store";
 
 const formSchema = z.object({
     method: z.enum(["GET", "POST", "PUT", "DELETE", "PATCH"]),
-    url: z.string().url("Invalid URL").nonempty("URL is required"),
+    url: z.string().nonempty("URL is required").url("Invalid URL"),
     headers: z.array(z.string()).optional(),
     body: z.string().optional(),
     params: z.string().optional(),
@@ -34,7 +31,7 @@ export default function RequestForm() {
 
 
     // const body = useSelector((state: { body: { value: string } }) => state.body.value);
-    const dispatch = useDispatch();
+    // const dispatch = useDispatch();
 
     const [activeTab, setActiveTab] = useState("Headers");
 
@@ -44,17 +41,18 @@ export default function RequestForm() {
         console.log(data);
     }
 
-    const handleBodyChange = (json: JSON) => {
-        console.log("Body changed", json);
-        dispatch(setBody({payload: JSON.stringify(json)}));
-    }
+    // const handleBodyChange = (json: JSON) => {
+    //     console.log("Body changed", json);
+    //     dispatch(setBody({payload: JSON.stringify(json)}));
+    // }
 
     const renderTab = (): JSX.Element => {
         switch (activeTab) {
             case "Headers":
                 return <HeadersTab/>;
             case "Body":
-                return <BodyTab updatedBody={(body)=> handleBodyChange(body)}/>;
+                return <div>Body</div>
+                // return <BodyTab updatedBody={(body)=> handleBodyChange(body)}/>;
             case "Params":
                 return <ParamsTab/>;
             default:
@@ -64,8 +62,8 @@ export default function RequestForm() {
 
     return (
         <form onSubmit={handleSubmit(onSubmit)}>
-            <div className="grid grid-cols-12 mt-3 mx-5">
-                <div className="col-span-2">
+            <div className="grid grid-cols-10 mt-3 mx-5">
+                <div className="col-span-1">
                     <Select
                         options={["GET", "POST", "PUT", "DELETE"]}
                         className="h-10 rounded-l-sm rounded-r-none shadow-none"
@@ -73,7 +71,7 @@ export default function RequestForm() {
                         errors={errors.method}
                     />
                 </div>
-                <div className="col-span-9">
+                <div className="col-span-8">
                     <Input
                         className="h-10 rounded-none"
                         placeholder="URL"
@@ -83,7 +81,7 @@ export default function RequestForm() {
                 </div>
                 <div className="col-span-1">
                     <Button
-                        className="h-10 rounded-none rounded-r-sm"
+                        className="h-10 w-full rounded-none rounded-r-sm"
                         type="submit"
                         disabled={isSubmitting}
                     >{isSubmitting ? 'Sending': 'Send'}</Button>

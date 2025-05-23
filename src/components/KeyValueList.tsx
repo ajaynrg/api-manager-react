@@ -22,15 +22,7 @@ export function KeyValueList({list}: KeyValueItemProps) {
         const updatedItems = [...items];
         updatedItems[index].checked = !updatedItems[index].checked;
         setItems(updatedItems);
-        console.log("Checkbox changed", updatedItems[index].checked);
-    };
-
-    const handleSelectAll = (e: React.ChangeEvent<HTMLInputElement>) => {
-        const checked = e.target.checked;
-        const updatedItems = items.map(item => ({ ...item, checked }));
-        setItems(updatedItems);
-        // console.log("Select all", checked);
-        console.log("Updated items", updatedItems);
+        // console.log("Checkbox changed", updatedItems[index].checked);
     };
 
     const handleAddClick = () => {
@@ -62,10 +54,19 @@ export function KeyValueList({list}: KeyValueItemProps) {
         setItems(updatedItems);
     };
 
+    const handleSelectAll = (checked: boolean) => {
+        const updatedItems = items.map(item => ({ ...item, checked }));
+        setItems(updatedItems);
+    };
+
     const renderedKeyValueItems  = items.map((item, index) => {
         return <tr key={index} className="border-b border-gray-200 h-12">
             <td className="text-left pl-5 pt-1">
-                <input type="checkbox" onChange={()=>{handleCheckboxChange(index)}} className="w-4 h-4 cursor-pointer"/>
+                <input 
+                    type="checkbox" 
+                    checked={item.checked || false}
+                    onChange={()=>{handleCheckboxChange(index)}} 
+                    className="w-4 h-4 cursor-pointer"/>
             </td>
             <td className="text-left px-5">
                 <Select
@@ -83,7 +84,7 @@ export function KeyValueList({list}: KeyValueItemProps) {
                     handleInput={(val) => {handleValueChange(index, val)}}
                 />
             </td>
-            <td>
+            <td className="text-left px-5">
                 <span 
                     onClick={() => handleDeleteClick(index)}
                     className="flex flex-row justify-between mr-20">
@@ -108,11 +109,13 @@ export function KeyValueList({list}: KeyValueItemProps) {
                 <thead className="border-b border-gray-200 bg-gray-200 h-10">
                     <tr>
                         <th className="text-left pl-5 pt-1">
-                            <input onChange={handleSelectAll} type="checkbox" className="w-4 h-4 cursor-pointer"/>
+                            <input onChange={
+                                (e) => {handleSelectAll(e.target.checked)}
+                            } type="checkbox" className="w-4 h-4 cursor-pointer"/>
                         </th>
-                        <th className="text-left">Key</th>
-                        <th className="text-left">Value</th>
-                        <th className="text-left">Description</th>
+                        <th className="text-left px-5">Key</th>
+                        <th className="text-left px-5">Value</th>
+                        <th className="text-left px-5">Description</th>
                     </tr>
                 </thead>
                 <tbody>

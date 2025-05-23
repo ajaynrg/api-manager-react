@@ -3,6 +3,7 @@ import { createSlice, type PayloadAction } from "@reduxjs/toolkit";
 export interface KeyValue{
     key: string;
     value: string;
+    description?: string;
 }
 
 export type Method = "GET" | "POST" | "PUT" | "DELETE" | "PATCH" | "OPTIONS" | "HEAD";
@@ -19,8 +20,8 @@ const initialState: RequestData = {
     url: "https://api.example.com",
     method: "POST",
     headers: [
-        { key: "Content-Type", value: "application/json" },
-        { key: "Authorization", value: "Bearer token" },
+        { key: "Content-Type", value: "application/json", description: "The type of content being sent" },
+        { key: "Authorization", value: "Bearer token", description: "Authorization token"},
     ],
     body: "{'key': 'value'}",
     params: [

@@ -1,4 +1,5 @@
 import type { KeyValue } from "../store/slices/RequestSlice";
+import { KeyValueList } from "./KeyValueList";
 
 interface HeadersTabProps{
     headers: KeyValue[];
@@ -7,8 +8,8 @@ interface HeadersTabProps{
 export function HeadersTab({headers}: HeadersTabProps ){
     console.log("HeadersTab", headers);
     return (
-        <>
-            <p>HeadersTab</p>
-        </>
+        <div className="flex flex-col items-center">
+            <KeyValueList list={headers} />
+        </div>
     )
 }

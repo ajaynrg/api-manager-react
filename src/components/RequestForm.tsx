@@ -97,7 +97,7 @@ export default function RequestForm() {
                     activeTab={activeTab}
                     onTabClick={setActiveTab}
                 />
-                <div className="mx-5 my-3">
+                <div className="mx-5 my-3 w-full">
                     {renderTab()}
                 </div>
             </div>

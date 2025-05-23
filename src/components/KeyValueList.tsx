@@ -18,7 +18,8 @@ interface ItemsType extends KeyValue {
 
 export function KeyValueList({list, headers}: KeyValueItemProps) {
 
-    const [items, setItems] = useState<ItemsType[]>(list);
+    const [items, setItems] = useState<ItemsType[]>(list.map(item => ({ ...item, checked: true })));
+    const [selectAll, setSelectAll] = useState(true);
 
     const handleCheckboxChange = (index: number) => {
         const updatedItems = [...items];
@@ -30,6 +31,7 @@ export function KeyValueList({list, headers}: KeyValueItemProps) {
     const handleAddClick = () => {
         const newItem: ItemsType = { key: "", value: "", description: "" };
         setItems([...items, newItem]);
+        console.log('ITemrs', items);
     };
 
     const handleDeleteClick = (index: number) => {
@@ -39,26 +41,39 @@ export function KeyValueList({list, headers}: KeyValueItemProps) {
     };
 
     const handleValueChange = (index: number, value: string) => {
-        const updatedItems = [...items];
-        updatedItems[index].value = value;
+        const updatedItems = [...items].map((item, i) => {
+            if (i === index) {
+                return { ...item, value };
+            }
+            return item;
+        });
         setItems(updatedItems);
     };
 
     const handleKeyChange = (index: number, value: string) => {
-        const updatedItems = [...items];
-        updatedItems[index].key = value;
+        const updatedItems = [...items].map((item, i) => {
+            if (i === index) {
+                return { ...item, key: value };
+            }
+            return item;
+        });
         setItems(updatedItems);
     };
 
     const handleDescriptionChange = (index: number, value: string) => {
-        const updatedItems = [...items];
-        updatedItems[index].description = value;
+        const updatedItems = [...items].map((item, i) => {
+            if (i === index) {
+                return { ...item, description: value };
+            }
+            return item;
+        })
         setItems(updatedItems);
     };
 
     const handleSelectAll = (checked: boolean) => {
         const updatedItems = items.map(item => ({ ...item, checked }));
         setItems(updatedItems);
+        setSelectAll(checked);
     };
 
     const renderedKeyValueItems  = items.map((item, index) => {
@@ -122,7 +137,9 @@ export function KeyValueList({list, headers}: KeyValueItemProps) {
                         <th className="text-left pl-5 pt-1">
                             <input onChange={
                                 (e) => {handleSelectAll(e.target.checked)}
-                            } type="checkbox" className="w-4 h-4 cursor-pointer"/>
+                            } type="checkbox" className="w-4 h-4 cursor-pointer"
+                            checked={selectAll}
+                        />
                         </th>
                         <th className="text-left px-5">Key</th>
                         <th className="text-left px-5">Value</th>

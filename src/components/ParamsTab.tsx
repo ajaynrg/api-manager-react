@@ -9,7 +9,7 @@ export function ParamsTab({params}: ParamsTabProps ) {
     console.log("ParamsTab", params);
     return (
         <div className="flex flex-col items-center">
-            <KeyValueList list={params} params/>
+            <KeyValueList list={params}/>
         </div>
     )
 }

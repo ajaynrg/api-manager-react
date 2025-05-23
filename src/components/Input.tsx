@@ -24,7 +24,7 @@ export function Input({handleInput, placeholder,value, className,errors, ...prop
                             ,className
                             ,errorClass
                         )}
-                    value={value}
+                    value={value ?? ""}
                     {...props}
                 />
                 {

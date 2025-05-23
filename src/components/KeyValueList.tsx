@@ -8,13 +8,15 @@ import { httpHeaderKeys } from "./KeyValueItem";
 
 interface KeyValueItemProps {
     list: KeyValue[];
+    headers?: boolean;
+    params?: boolean;
 }
 
 interface ItemsType extends KeyValue {
     checked?: boolean;
 }
 
-export function KeyValueList({list}: KeyValueItemProps) {
+export function KeyValueList({list, headers}: KeyValueItemProps) {
 
     const [items, setItems] = useState<ItemsType[]>(list);
 
@@ -69,12 +71,22 @@ export function KeyValueList({list}: KeyValueItemProps) {
                     className="w-4 h-4 cursor-pointer"/>
             </td>
             <td className="text-left px-5">
-                <Select
-                    options={httpHeaderKeys}
-                    selectedVal={item.key}
-                    onSelect={(value)=>{handleKeyChange(index, value)}}
-                    className="h-8 text-s rounded-sm focus:border-blue-500 focus:ring-blue-500"
-                />
+                {
+                    headers ? 
+                    <Select
+                        options={httpHeaderKeys}
+                        selectedVal={item.key}
+                        onSelect={(value)=>{handleKeyChange(index, value)}}
+                        className="h-8 text-s rounded-sm focus:border-blue-500 focus:ring-blue-500"
+                    />
+                    :
+                    <Input
+                        placeholder="Key"
+                        className="h-8 text-s rounded-sm focus:border-blue-500 focus:ring-blue-500"
+                        value={item.key}
+                        handleInput={(val) => {handleKeyChange(index, val)}}
+                    />
+                }
             </td>
             <td className="text-left px-5">
                 <Input
@@ -85,8 +97,7 @@ export function KeyValueList({list}: KeyValueItemProps) {
                 />
             </td>
             <td className="text-left px-5">
-                <span 
-                    onClick={() => handleDeleteClick(index)}
+                <span
                     className="flex flex-row justify-between mr-20">
                     <span className="w-4/5">
                         <Input
@@ -96,7 +107,7 @@ export function KeyValueList({list}: KeyValueItemProps) {
                             handleInput={(val) => {handleDescriptionChange(index, val)}}
                         />
                     </span>
-                    <span className="text-lg text-gray-500 cursor-pointer self-center mt-1 hover:text-red-500">
+                    <span onClick={() => handleDeleteClick(index)} className="text-lg text-gray-500 cursor-pointer self-center mt-1 hover:text-red-500">
                             <AiFillDelete />
                     </span>
                 </span>

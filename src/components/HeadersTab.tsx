@@ -6,10 +6,9 @@ interface HeadersTabProps{
 }
 
 export function HeadersTab({headers}: HeadersTabProps ){
-    console.log("HeadersTab", headers);
     return (
         <div className="flex flex-col items-center">
-            <KeyValueList list={headers} />
+            <KeyValueList list={headers} headers/>
         </div>
     )
 }

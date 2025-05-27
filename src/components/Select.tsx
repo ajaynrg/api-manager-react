@@ -33,7 +33,7 @@ export function Select({options, selectedVal, className, onSelect, errors,  ...p
                 ))}
             </select>
             {/* Custom arrow */}
-            <span className="pointer-events-none absolute right-3 top-1/2 transform -translate-y-1/2 text-gray-400">
+            <span className="pointer-events-none absolute right-2 top-1/2 transform -translate-y-1/2 text-gray-400">
                 <IoIosArrowDown/>
             </span>
             {

@@ -77,7 +77,7 @@ export function KeyValueList({list, headers}: KeyValueItemProps) {
     };
 
     const renderedKeyValueItems  = items.map((item, index) => {
-        return <tr key={index} className="border-b border-gray-200 h-12">
+        return <tr key={index} className="border-b border-gray-200 h-14 py-2">
             <td className="text-left pl-5 pt-1">
                 <input 
                     type="checkbox" 
